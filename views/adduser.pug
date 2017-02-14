@@ -1,0 +1,18 @@
+html
+	head
+		title users added
+	body
+		h1 users added
+		form(action='/adduser', method='post')
+			| First Name: 
+			input(type='text', name='firstname')
+			br
+			| Last Name: 
+			input(type='text', name='lastname')
+			br
+			| Email Address: 
+			input(type='text', name='email')
+			br
+			
+			input(type='submit', value='Submit')
+

@@ -1,0 +1,12 @@
+html
+	head
+		title search form	
+	body 	
+		h1 search for users	
+		form(action='/search', method='post')
+			| Search user: 
+			input(type='text', name='searchedName')
+			br
+			
+			input(type='submit', value='Submit')
+
