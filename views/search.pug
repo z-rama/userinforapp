@@ -1,12 +1,36 @@
 html
-	head
-		title search form	
-	body 	
-		h1 search for users	
-		form(action='/search', method='post')
-			| Search user: 
-			input(type='text', name='searchedName')
-			br
-			
-			input(type='submit', value='Submit')
-
+  head
+  body
+    form(autocomplete="off", method="post", action="/search")
+      fieldset
+        legend General
+        p
+          label Username:
+            input(id='query', type="text", name="query" list="list")
+            datalist#list
+      p.buttons
+        input(type="submit", value="Save")
+      //- p This is your result:
+      script(src="https://code.jquery.com/jquery-3.1.1.js")
+      script(src="http://code.jquery.com/ui/1.12.1/jquery-ui.js") 
+      script(src="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css")
+      script.
+        var timer = 0
+         $("#query").keyup(function(e){ 
+           e.preventDefault()
+           let userInput = $(this).val()
+           let timeNow = Date.now()
+           if( timeNow - timer > 300) {
+            $.post('/searchData', {input: userInput}, function(data){
+              console.log(data)
+              //- $( '#query' ).autocomplete({
+              //-  source: data
+              //-  })
+              //-  timer = Date.now()
+              $('#list').empty()
+              for(var i = 0; i<data.length; i++) {
+                $('#list').append('<option>' + data[i] + '</option>')
+              }
+            })
+          }
+         }) 

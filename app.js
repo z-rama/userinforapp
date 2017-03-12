@@ -8,12 +8,23 @@ const bodyParser = require('body-parser')
 app.use(bodyParser.json());
 
 
+
+
+
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 //set view directory and engine
 app.set('views', __dirname + '/views')
 app.set('view engine', 'pug')
+
+
+app.get('/autocomplete', (req, res) => {
+	res.render ('autocomplete')
+});
+
+
+
 
 //route one render every user
 app.get('/', (request, response) =>{
@@ -50,6 +61,26 @@ app.get('/addUser', (request, response) => {
 app.get('/oops', (req, res) => {
 	res.render ('oops')
 })
+
+app.post('/searchData', (req, res) =>{
+	console.log(req.body)
+
+	let result = []
+	fs.readFile(__dirname + '/user.json', (err, data) =>{
+		if(err){ 
+			throw err
+		}
+		let parsedData = JSON.parse(data)
+		for (let i = parsedData.length - 1; i >= 0; i--) {
+			if (parsedData[i].firstName.indexOf(req.body.input) > -1){
+				result.push(parsedData[i].firstName)
+			}
+		}		
+	res.send(result)
+	})
+})
+
+
 
 		//route three renders results from search
 app.post('/search', (request, response) => {
